@@ -1,4 +1,7 @@
 # unclogging
+
+[![CircleCI](https://circleci.com/gh/AlexanderMann/unclogging.svg?style=svg)](https://circleci.com/gh/AlexanderMann/unclogging)
+
 _A repo designed to help you unclog your Clojure logging woes_
 
 Logging in Clojure can get to be fun when you're messing around with someone else's libraries...especially when those are Java. Things like Java Util Logging, SLF4J, Netty, etc., log out in various ways that you might not realize.
