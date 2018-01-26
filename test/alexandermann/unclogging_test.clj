@@ -104,18 +104,18 @@
               test-message)
       (is (-> (logs)
               pr-str
-              (string/includes? test-message)))))
+              (string/includes? test-message))))))
 
-  (defn logtest
-    [string-to-print string-to-prevent]
-    (start-test)
-    (u/merge-config! (u/prevent-hazard {:level :info}
-                                       (fn [v]
-                                         (and (string? v)
-                                              (string/includes? v string-to-prevent)))))
-    (log/fatal string-to-print string-to-prevent)
-    (mapv (partial zipmap [:printed :redacted])
-          (logs))))
+(defn logtest
+  [string-to-print string-to-prevent]
+  (start-test)
+  (u/merge-config! (u/prevent-hazard {:level :info}
+                                     (fn [v]
+                                       (and (string? v)
+                                            (string/includes? v string-to-prevent)))))
+  (log/fatal string-to-print string-to-prevent)
+  (mapv (partial zipmap [:printed :redacted])
+        (logs)))
 
 (s/fdef
   logtest

@@ -38,7 +38,7 @@ jobs:
     docker:
       - image: clojure:lein-2.8.1-alpine
       - image: mannimal/elk-cci
-    working_directory: /root/service-utils
+    working_directory: /root/unclogging
     steps:
       - checkout
       - *restore_deps
