@@ -1,0 +1,60 @@
+version: 2.0
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build_cache
+      - test:
+          requires:
+            - build_cache
+
+# The step to restore the dependencies from the cache.
+restore_deps: &restore_deps
+  restore_cache:
+    keys:
+      - deps-v0.0.0.1-{{ checksum "project.clj" }}
+      - deps-v0.0.0.1-
+
+jobs:
+  build_cache:
+    docker:
+      - image: clojure:alpine
+    working_directory: /root/unclogging
+    steps:
+      - checkout
+      - *restore_deps
+
+      - run:
+          name: Download dependencies
+          command: lein deps
+
+      - save_cache:
+          key: deps-v0.0.0.1-{{ checksum "project.clj" }}
+          paths:
+            - /root/.m2
+
+  test:
+    docker:
+      - image: clojure:lein-2.8.1-alpine
+      - image: mannimal/elk-cci
+    working_directory: /root/service-utils
+    steps:
+      - checkout
+      - *restore_deps
+
+      - run:
+          name: Run Tests
+          command: lein cci-test
+          environment:
+            TIMBRE__LEVEL: :warn
+            TIMBRE__LOGSTASH__HOST: localhost
+            TIMBRE__LOGSTASH__PORT: 5044
+            TIMBRE__ANSI_ENABLED: 'true'
+
+      - store_test_results:
+          path: target/test-results
+
+      - store_artifacts:
+          path: target/test-results
+          destination: raw-test-output
