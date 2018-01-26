@@ -1,6 +1,5 @@
 (ns alexandermann.unclogging
   (:require [clojure.spec.alpha :as s]
-            [clojure.future :refer :all]
             [clojure.string :as string]
             [clojure.walk :as walk]
             [taoensso.timbre :as log]
@@ -175,6 +174,7 @@
         {:appenders {:logstash (logstash/logstash-appender host port {:flush? true})}}))))
 
 (s/fdef
+  merge-config!
   :args (s/cat :config (s/keys :req-un [::level]
                                :opt-un [::middleware
                                         ::logstash

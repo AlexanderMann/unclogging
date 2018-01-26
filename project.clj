@@ -3,6 +3,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0"]
+                 [cheshire "5.8.0"]
                  [com.taoensso/timbre "4.10.0"]
                  [com.fzakaria/slf4j-timbre "0.3.8"]
                  [org.slf4j/slf4j-api "1.7.25"]
@@ -18,7 +19,8 @@
   :aliases {"cci-test" ["with-profile" "dev" "run" "-m" "circleci.test/dir" :project/test-paths]
             "cci-retest" ["with-profile" "dev" "run" "-m" "circleci.test.retest"]}
 
-  :profiles {:dev {:dependencies   [[org.clojure/test.check "0.9.0"]
+  :profiles {:dev {:dependencies   [[org.clojure/tools.nrepl "0.2.13"]
+                                    [org.clojure/test.check "0.9.0"]
                                     [pjstadig/humane-test-output "0.8.1"]
                                     [circleci/circleci.test "0.4.0"]]
                    :injections     [(require 'pjstadig.humane-test-output)
